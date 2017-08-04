@@ -18,7 +18,7 @@ RUN echo "deb http://ubuntu.kurento.org/ trusty kms6" | tee /etc/apt/sources.lis
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8888 0-65535/udp 8443 3478
+EXPOSE 8888 0-65535/udp 8433 3478
 
 RUN certtool --generate-privkey --outfile /etc/kurento/defaultCertificate.pem
 RUN echo 'organization = your organization name' > /etc/kurento/certtool.tmpl
