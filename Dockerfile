@@ -2,8 +2,8 @@
 #
 # VERSION               4.4.3
 
-FROM ubuntu:14.04
-MAINTAINER Patxi Gortázar <patxi.gortazar@gmail.com>
+FROM ubuntu:trusty
+LABEL maintainer="roma.gordeev@gmail.com"
 
 RUN apt-get update \
   && apt-get -y dist-upgrade \
