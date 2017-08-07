@@ -1,4 +1,4 @@
-FROM 2chat/ubuntu-base:trusty
+FROM 2chat/ubuntu:trusty
 LABEL maintainer="roma.gordeev@gmail.com"
 
 EXPOSE 8888 
