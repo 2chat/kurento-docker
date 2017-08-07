@@ -1,14 +1,12 @@
-# stream oriented kurento
-#
-# VERSION               4.4.3
-
-FROM ubuntu:trusty
+FROM 2chat/ubuntu-base:trusty
 LABEL maintainer="roma.gordeev@gmail.com"
 
-RUN apt-get update \
-  && apt-get -y dist-upgrade \
-  && apt-get install -y wget
+EXPOSE 8888 
+EXPOSE 0-65535/udp 
+EXPOSE 8433 
+EXPOSE 3478
 
+# install kurento media server
 RUN echo "deb http://ubuntu.kurento.org/ trusty kms6" | tee /etc/apt/sources.list.d/kurento.list \
   && wget -O - http://ubuntu.kurento.org/kurento.gpg.key | apt-key add - \
   && apt-get update \
@@ -18,17 +16,21 @@ RUN echo "deb http://ubuntu.kurento.org/ trusty kms6" | tee /etc/apt/sources.lis
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 8888 0-65535/udp 8433 3478
+# generate self-signed key
+RUN certtool --generate-privkey --outfile /etc/kurento/defaultCertificate.pem \
+  && echo 'organization = your organization name' > /etc/kurento/certtool.tmpl \
+  && certtool --generate-self-signed --load-privkey /etc/kurento/defaultCertificate.pem --template /etc/kurento/certtool.tmpl >> /etc/kurento/defaultCertificate.pem \
+  && chown kurento /etc/kurento/defaultCertificate.pem
 
-RUN certtool --generate-privkey --outfile /etc/kurento/defaultCertificate.pem
-RUN echo 'organization = your organization name' > /etc/kurento/certtool.tmpl
-RUN certtool --generate-self-signed --load-privkey /etc/kurento/defaultCertificate.pem --template /etc/kurento/certtool.tmpl >> /etc/kurento/defaultCertificate.pem
-RUN chown kurento /etc/kurento/defaultCertificate.pem
+WORKDIR /
 
-COPY ./kurento.conf.json /etc/kurento/kurento.conf.json
-COPY ./entrypoint.sh /entrypoint.sh
+# set up kurento config file
+COPY kurento.conf.json /etc/kurento/kurento.conf.json
+# set up docker entrypoint script
+COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+# set up gstreamer logging level to 5 (log everything) for Kurento process
 ENV GST_DEBUG=Kurento*:5
 
 ENTRYPOINT ["/entrypoint.sh"]
