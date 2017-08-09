@@ -1,4 +1,4 @@
-FROM 2chat/ubuntu:trusty
+FROM 2chat/ubuntu:xenial
 LABEL maintainer="roma.gordeev@gmail.com"
 
 EXPOSE 8888 
@@ -7,7 +7,7 @@ EXPOSE 8433
 EXPOSE 3478
 
 # install kurento media server
-RUN echo "deb http://ubuntu.kurento.org/ trusty kms6" | tee /etc/apt/sources.list.d/kurento.list \
+RUN echo "deb http://ubuntu.kurento.org/ xenial kms6" | tee /etc/apt/sources.list.d/kurento.list \
   && wget -O - http://ubuntu.kurento.org/kurento.gpg.key | apt-key add - \
   && apt-get update \
   && apt-get -y install kurento-media-server-6.0 \
