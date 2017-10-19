@@ -13,6 +13,7 @@ RUN echo "deb http://ubuntu.kurento.org/ xenial kms6" | tee /etc/apt/sources.lis
   && apt-get -y install kurento-media-server-6.0 \
   && apt-get -y install kms-pointerdetector-6.0 \
   && apt-get -y install gnutls-bin \
+  && apt-get -y install openh264-gst-plugins-bad-1.5 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
