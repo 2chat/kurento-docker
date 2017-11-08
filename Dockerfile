@@ -2,7 +2,7 @@ FROM 2chat/ubuntu:xenial
 LABEL maintainer="roma.gordeev@gmail.com"
 
 EXPOSE 8888 
-EXPOSE 0-65535/udp 
+EXPOSE 20000-65535/udp
 EXPOSE 8433 
 EXPOSE 3478
 
